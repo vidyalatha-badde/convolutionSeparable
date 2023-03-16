@@ -105,19 +105,25 @@ void convolutionRowsKernel(float *d_Dst, float *d_Src, int imageW,
   performance if there is no access to global memory.
   */
   item_ct1.barrier();
+
+float a[2*KERNEL_RADIUS + 1];
+#pragma unroll
+ for(int i=0; i<= 2*KERNEL_RADIUS; i++)
+ {
+     a[i]=c_Kernel[i];
+ }
 #pragma unroll
 
   for (int i = ROWS_HALO_STEPS; i < ROWS_HALO_STEPS + ROWS_RESULT_STEPS; i++) {
-    float sum = 0;
+    float sum =0;
 
-#pragma unroll
+//#pragma unroll
 
     for (int j = -KERNEL_RADIUS; j <= KERNEL_RADIUS; j++) {
-      sum += c_Kernel[KERNEL_RADIUS - j] *
+      sum += a[KERNEL_RADIUS - j] *
              s_Data[item_ct1.get_local_id(1)]
                    [item_ct1.get_local_id(2) + i * ROWS_BLOCKDIM_X + j];
-    }
-
+  }
     d_Dst[i * ROWS_BLOCKDIM_X] = sum;
   }
 }
@@ -155,6 +161,7 @@ extern "C" void convolutionRowsGPU(float *d_Dst, float *d_Src, int imageW,
                                              s_Data_acc_ct1);
                      });
   });
+  getLastCudaError("convolutionRowsKernel() execution failed\n");
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -224,19 +231,26 @@ void convolutionColumnsKernel(float *d_Dst, float *d_Src, int imageW,
   performance if there is no access to global memory.
   */
   item_ct1.barrier();
+
+
+float a[2*KERNEL_RADIUS + 1];
 #pragma unroll
+ for(int i=0; i<= 2*KERNEL_RADIUS; i++)
+ {
+     a[i]=c_Kernel[i];
+ }
+//#pragma unroll
 
   for (int i = COLUMNS_HALO_STEPS;
        i < COLUMNS_HALO_STEPS + COLUMNS_RESULT_STEPS; i++) {
-    float sum = 0;
+    float sum =0;
 #pragma unroll
 
     for (int j = -KERNEL_RADIUS; j <= KERNEL_RADIUS; j++) {
-      sum += c_Kernel[KERNEL_RADIUS - j] *
+      sum += a[KERNEL_RADIUS - j] *
              s_Data[item_ct1.get_local_id(2)]
                    [item_ct1.get_local_id(1) + i * COLUMNS_BLOCKDIM_Y + j];
     }
-
     d_Dst[i * COLUMNS_BLOCKDIM_Y * pitch] = sum;
   }
 }
@@ -274,4 +288,5 @@ extern "C" void convolutionColumnsGPU(float *d_Dst, float *d_Src, int imageW,
                            c_Kernel_ptr_ct1, s_Data_acc_ct1);
                      });
   });
+  getLastCudaError("convolutionColumnsKernel() execution failed\n");
 }

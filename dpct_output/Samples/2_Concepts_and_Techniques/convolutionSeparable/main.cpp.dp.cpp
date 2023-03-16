@@ -71,6 +71,9 @@ int main(int argc, char **argv) {
 
   // Use command-line specified CUDA device, otherwise use device with highest
   // Gflops/s
+//  findCudaDevice(argc, (const char **)argv);
+  std::cout << "\nRunning on "
+            << dpct::get_default_queue().get_device().get_info<sycl::info::device::name>() << "\n";
 
   sdkCreateTimer(&hTimer);
 

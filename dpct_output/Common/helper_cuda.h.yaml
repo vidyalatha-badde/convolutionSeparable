@@ -1,5 +1,5 @@
 ---
-MainSourceFile:  '/home/tcs/Manjula_workspace/cuda-samples/Samples/2_Concepts_and_Techniques/convolutionSeparable/migrated/Common/helper_cuda.h'
+MainSourceFile:  '/home/tcs/Manjula_workspace/cuda-samples/Samples/2_Concepts_and_Techniques/convolutionSeparable/dpct_output/Common/helper_cuda.h'
 Replacements:
   - FilePath:        '/home/tcs/Manjula_workspace/cuda-samples/Common/helper_cuda.h'
     Offset:          1793
