@@ -29,7 +29,6 @@
 #include <dpct/dpct.hpp>
 #include <assert.h>
 #include <helper_cuda.h>
-#include <cooperative_groups.h>
 
 #include "convolutionSeparable_common.h"
 
