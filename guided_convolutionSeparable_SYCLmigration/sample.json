@@ -1,8 +1,8 @@
 {
-  "guid": "FC73EB0A-EAC4-4723-86A9-814574CB8904",
-  "name": "simpleCudaGraphs",
+  "guid": "842EBEB9-B902-4706-8C08-02E4EB550FC1",
+  "name": "convolutionSeparable",
   "categories": ["Toolkit/oneAPI Direct Programming/C++SYCL/Dense Linear Algebra"],
-  "description": "Migration of simpleCudaGraphs from CUDA to SYCL, demonstrates usage of Taskflow programming model inplace of CUDA Graph API's",
+  "description": "Migration of convolutionSeparable from CUDA to SYCL, demonstrates usage of Taskflow programming model inplace of CUDA Graph API's",
   "toolchain": [ "dpcpp" ],
   "languages": [ { "cpp": {} } ],
   "targetDevice": [ "CPU", "GPU" ],
