@@ -6,5 +6,5 @@ include_directories(${CMAKE_SOURCE_DIR}/dpct_output/include/)
 add_executable (dpct_output Samples/2_Concepts_and_Techniques/convolutionSeparable/main.cpp.dp.cpp Samples/2_Concepts_and_Techniques/convolutionSeparable/convolutionSeparable.dp.cpp Samples/2_Concepts_and_Techniques/convolutionSeparable/convolutionSeparable_gold.cpp)
 target_link_libraries(dpct_output sycl)
 
-add_custom_target (run_cpu SYCL_DEVICE_FILTER=cpu cd ${CMAKE_SOURCE_DIR}/dpct_output/ && ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/dpct_output)
-add_custom_target (run_gpu cd ${CMAKE_SOURCE_DIR}/dpct_output/ && ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/dpct_output)
+add_custom_target (run_cpu cd ${CMAKE_SOURCE_DIR}/dpct_output/ && ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/dpct_output)
+add_custom_target (run_gpu SYCL_DEVICE_FILTER=gpu cd ${CMAKE_SOURCE_DIR}/dpct_output/ && ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/dpct_output)
