@@ -1,6 +1,6 @@
-﻿# `SimpleCudaGraphs` Sample
+﻿# `convolutionSeparable` Sample
 
-The `simpleCudaGraphs` sample demonstrates the migration of CUDA Graph explicit API calls to SYCL using Taskflow programming model which manages a task dependency graph. This sample is implemented using SYCL* by migrating code from original CUDA source code and offloading computations to a GPU/CPU.
+The `convolutionSeparable` sample demonstrates the migration of CUDA Graph explicit API calls to SYCL using Taskflow programming model which manages a task dependency graph. This sample is implemented using SYCL* by migrating code from original CUDA source code and offloading computations to a GPU/CPU.
 
 | Property               | Description
 |:---                    |:---
@@ -19,7 +19,7 @@ This sample contains two versions in the following folders:
 | Folder Name                   | Description
 |:---                           |:---
 | `01_dpct_output`              | Contains output of Intel® SYCLomatic Compatibility Tool used to migrate SYCL-compliant code from CUDA code. This SYCL code has some unmigrated code that has to be manually fixed to get full functionality. (The code does not functionally work as supplied.)
-| `02_sycl_migrated`            | Contains manually migrated SYCL code from CUDA code.
+| `convolutionSeparable_migrated_optimized`            | Contains the SYCL code from CUDA code.
 
 
 
@@ -40,7 +40,7 @@ SYCL simpleCudaGraphs sample performs reduction operarion to obtain the sum valu
 
 When working with the command-line interface (CLI), you should configure the oneAPI toolkits using environment variables. Set up your CLI environment by sourcing the `setvars` script every time you open a new terminal window. This practice ensures that your compiler, libraries, and tools are ready for development.
 
-## Build the `simpleCudaGraphs` Sample for CPU and GPU
+## Build the `convolutionSeparable` Sample for CPU and GPU
 
 > **Note**: If you have not already done so, set up your CLI
 > environment by sourcing  the `setvars` script in the root of your oneAPI installation.
@@ -75,7 +75,7 @@ make VERBOSE=1
 If you receive an error message, troubleshoot the problem using the **Diagnostics Utility for Intel® oneAPI Toolkits**. The diagnostic utility provides configuration and system checks to help find missing dependencies, permissions errors, and other issues. See the [Diagnostics Utility for Intel® oneAPI Toolkits User Guide](https://www.intel.com/content/www/us/en/develop/documentation/diagnostic-utility-user-guide/top.html) for more information on using the utility.
 
 
-## Run the `simpleCudaGraphs` Sample
+## Run the `convolutionSeparable` Sample
 
 ### On Linux
 
@@ -87,7 +87,7 @@ You can run the programs for CPU and GPU. The commands indicate the device targe
     make run_gpu
     ```
 
-### Build and Run the `simpleCudaGraphs` Sample in Intel® DevCloud
+### Build and Run the `convolutionSeparable` Sample in Intel® DevCloud
 
 When running a sample in the Intel® DevCloud, you must specify the compute node (CPU, GPU, FPGA) and whether to run in batch or interactive mode. For more information, see the Intel® oneAPI Base Toolkit [Get Started Guide](https://devcloud.intel.com/oneapi/get_started/).
 
