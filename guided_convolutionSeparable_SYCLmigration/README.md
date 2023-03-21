@@ -1,25 +1,23 @@
 ﻿# `convolutionSeparable` Sample
 
-The `convolutionSeparable` sample demonstrates the migration of CUDA Graph explicit API calls to SYCL using Taskflow programming model which manages a task dependency graph. This sample is implemented using SYCL* by migrating code from original CUDA source code and offloading computations to a GPU/CPU.
+The `convolutionSeparable` sample is implemented using SYCL* by migrating code from original CUDA source code and offloading computations to a GPU/CPU.
 
 | Property               | Description
 |:---                    |:---
-| What you will learn    | How to begin migrating CUDA to SYCL
+| What you will learn    | migrating CUDA to SYCL and optimizing it
 | Time to complete       | 15 minutes
 
->**Note**: This sample is based on the [simpleCudaGraphs](https://github.com/NVIDIA/cuda-samples/tree/v11.8/Samples/3_CUDA_Features/simpleCudaGraphs) sample in the NVIDIA/cuda-samples GitHub repository.
+>**Note**: This sample is based on the [convolutionSeparable](https://github.com/NVIDIA/cuda-samples/tree/master/Samples/2_Concepts_and_Techniques/convolutionSeparable) sample in the NVIDIA/cuda-samples GitHub repository.
 
 
-## Purpose
-
-The sample shows the migration of simple explicit CUDA Graph API's such as cudaGraphCreate, cudaGraphAddMemcpyNode, cudaGraphClone etc, to SYCL equivalent API's using [Taskflow](https://github.com/taskflow/taskflow) programming Model. The parallel implementation demonstrates the use of CUDA Graph API's, CUDA streams, shared memory, cooperative groups and warp level primitives. 
+## Purpose 
 
 This sample contains two versions in the following folders:
 
 | Folder Name                   | Description
 |:---                           |:---
-| `01_dpct_output`              | Contains output of Intel® SYCLomatic Compatibility Tool used to migrate SYCL-compliant code from CUDA code. This SYCL code has some unmigrated code that has to be manually fixed to get full functionality. (The code does not functionally work as supplied.)
-| `convolutionSeparable_migrated_optimized`            | Contains the SYCL code from CUDA code.
+| `dpct_output`              | Contains output of Intel® SYCLomatic Compatibility Tool which is fully migrated version of CUDA code. 
+| `convolutionSeparable_migrated_optimized`            | Contains the optimized sycl code 
 
 
 
@@ -33,7 +31,7 @@ This sample contains two versions in the following folders:
 
 ## Key Implementation Details
 
-SYCL simpleCudaGraphs sample performs reduction operarion to obtain the sum value from 16777216 number of elements in two different computational kernels reduce and reduceFinal. These kernels are scheduled through taskflow which develops a simple and powerful task programming model to enable efficient implementations of heterogeneous decomposition strategies and leverages both static and dynamic task graph constructions to incorporate computational patterns.
+This sample implements a separable convolution filter of a 2D image with an arbitrary kernel. There are two functions in the code named `convolutionRowsGPU` and `convolutionColumnsGPU` in which the kernel functions (`convolutionRowsKernel` & `convolutionColumnsKernel`) are called where the loading of the input data and computations are performed. We validate the results with reference CPU separable convolution implementation by calculating the relative L2 norm.
 
 
 ## Set Environment Variables
@@ -63,7 +61,7 @@ When working with the command-line interface (CLI), you should configure the one
    $ make
    ```
 
-   By default, this command sequence will build the `02_sycl_migrated` versions of the program.
+   By default, this command sequence will build the `dpct_output` as well as `convolutionSeparable_migrated_optimized` versions of the program.
 
 #### Troubleshooting
 
@@ -81,12 +79,16 @@ If you receive an error message, troubleshoot the problem using the **Diagnostic
 
 You can run the programs for CPU and GPU. The commands indicate the device target.
 
-1. Run `02_sycl_migrated` for CPU and GPU.
+1. Run `dpct_output` for CPU and GPU.
     ```
     make run_cpu
     make run_gpu
     ```
-
+2. Run `convolutionSeparable_migrated_optimized` for CPU and GPU.
+    ```
+    make run_cmo_cpu
+    make run_cmo_gpu
+    ```
 ### Build and Run the `convolutionSeparable` Sample in Intel® DevCloud
 
 When running a sample in the Intel® DevCloud, you must specify the compute node (CPU, GPU, FPGA) and whether to run in batch or interactive mode. For more information, see the Intel® oneAPI Base Toolkit [Get Started Guide](https://devcloud.intel.com/oneapi/get_started/).
@@ -128,26 +130,6 @@ You can submit build and run jobs through a Portable Bash Script (PBS). A job is
     ```
     exit
     ```
-
-### Example Output
-
-The following example is for `02_sycl_migrated` for CPU on **Intel(R) Xeon(R) CPU E5-2699 v4 @ 2.20GHz**.
-```
-16777216 elements
-threads per block  = 512
-Graph Launch iterations = 3
-[syclTaskFlowManual] Host callback final reduced sum = 0.996214
-[syclTaskFlowManual] Host callback final reduced sum = 0.996214
-[syclTaskFlowManual] Host callback final reduced sum = 0.996214
-
-Number of tasks(nodes) in the syclTaskFlow(graph) created manually = 7
-Cloned Graph Output..
-[syclTaskFlowManual] Host callback final reduced sum = 0.996214
-[syclTaskFlowManual] Host callback final reduced sum = 0.996214
-[syclTaskFlowManual] Host callback final reduced sum = 0.996214
-Elapsed Time of SYCL TaskFlow Manual : 504.690613 (ms)
-```
-
 ## License
 Code samples are licensed under the MIT license. See
 [License.txt](https://github.com/oneapi-src/oneAPI-samples/blob/master/License.txt) for details.
