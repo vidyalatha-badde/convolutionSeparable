@@ -35,7 +35,7 @@ This sample implements a separable convolution filter of a 2D image with an arbi
 
 ## Build and Run the convolutionSeparable Sample on NVIDIA GPU
 
-To run convolutionSeparable SYCL migrated sample with CUDA NVIDIA backend we use open source DPC++ compiler. Refer DPC++ LLVM(CLang-LLVM) to build and set-up the compiler.
+To run convolutionSeparable SYCL migrated sample with CUDA NVIDIA backend we use open source DPC++ compiler. Refer [DPC++ LLVM(CLang-LLVM)](https://www.intel.com/content/www/us/en/developer/articles/technical/compiling-sycl-with-different-gpus.html#:~:text=their%20short%20descriptions.-,DPC%2B%2B%2DLLVM%20(CLang%2DLLVM),-The%20Data%20Parallel) to build and set-up the compiler.
 
 **Steps**
 
