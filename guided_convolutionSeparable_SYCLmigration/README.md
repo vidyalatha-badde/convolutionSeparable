@@ -51,7 +51,7 @@ When working with the command-line interface (CLI), you should configure the one
 
 ## Tool assisted migration – SYCLomatic 
 
-For this sample, the Intel SYCLomatic Compatibility tool automatically migrates ~100% of the CUDA code to SYCL. Follow these steps to generate the SYCL code using the compatibility tool:
+For this sample, the Intel SYCLomatic Compatibility tool automatically migrates 100% of the CUDA code to SYCL. Follow these steps to generate the SYCL code using the compatibility tool:
 
 1. git clone https://github.com/NVIDIA/cuda-samples.git
 2. cd cuda-samples/Samples/2_Concepts_and_Techniques/convolutionSeparable/
