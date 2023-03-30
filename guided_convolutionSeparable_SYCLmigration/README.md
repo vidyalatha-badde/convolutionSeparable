@@ -17,7 +17,6 @@
 ## Source code
 
 - [CUDA](https://github.com/NVIDIA/cuda-samples/tree/master/Samples/2_Concepts_and_Techniques/convolutionSeparable) - Source code 
-- [SYCL](https://github.com/vidyalatha-badde/convolutionSeparable/tree/master/guided_convolutionSeparable_SYCLmigration) - Migrated Code
 
 ## Purpose
 
@@ -73,20 +72,16 @@ To find the device on which the code is getting executed replace the findCudaDev
  ```
 ## Optimizations
 
-The migrated code can be optimized by using profiling tools (in this case we use nvprof as we have run the code on nvidia gpu) which helps in identifying the hotspots.
-
-Command: `nvprof <executable_name>`
+The migrated code can be optimized by using profiling tools which helps in identifying the hotspots (in this case convolutionRowsKernel() and convolutionColumnsKernel()).
  
-It shows the time taken by the API calls as well as the GPU activities. The output of the above command displays two functions under GPU activities i.e., convolutionRowsKernel and convolutionColumnsKernel functions in which loading the input data and actual computations takes place. 
-
-If we observe the migrated SYCL code, especially in the above-mentioned function calls, we see many ‘for’ loops which are being unrolled.
+If we observe the migrated SYCL code, especially in the above-mentioned function calls we see many ‘for’ loops which are being unrolled.
 Although loop unrolling exposes opportunities for instruction scheduling optimization by the compiler and thus can improve performance, sometimes it may increase pressure on register allocation and cause register spilling. 
 
 So, it is always a good idea to compare the performance with and without loop unrolling along with different times of unrolls to decide if a loop should be unrolled or how many times to unroll it.
 
 In this case, by implementing the above technique, we can decrease the execution time by avoiding loop unrolling at the innermost “for-loop” of the computation part in convolutionRowsKernel function (line 120) and avoiding loop unrolling at the outer loop of the computation part in convolutionColumnsKernel function (line 242) of the file convolutionSeparable.dp.cpp.
 
-Also, we can still decrease the execution time by avoiding the repetitive loading of c_Kernel[] array (as it is independent of i for loop in convolutionSeparable.dp.cpp file). 
+Also, we can still decrease the execution time by avoiding the repetitive loading of c_Kernel[] array (as it is independent of `i` for-loop in convolutionSeparable.dp.cpp file). 
 
   ```
   for (int i = ROWS_HALO_STEPS; i < ROWS_HALO_STEPS + ROWS_RESULT_STEPS; i++) {
@@ -160,7 +155,6 @@ You can run the programs for CPU and GPU. The commands indicate the device targe
 dpct_output
 
 ```
-Running on Tesla P100-PCIE-12GB
 Image Width x Height = 3072 x 3072
 
 Allocating and initializing host arrays...
@@ -185,7 +179,6 @@ Built target run_gpu
 sycl_migrated_optimized
 
 ```
-Running on Tesla P100-PCIE-12GB
 Image Width x Height = 3072 x 3072
 
 Allocating and initializing host arrays...
