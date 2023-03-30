@@ -71,6 +71,38 @@ To find the device on which the code is getting executed replace the findCudaDev
  ```
  std::cout << "\nRunning on " << dpct::get_default_queue().get_device().get_info<sycl::info::device::name>() <<"\n";   
  ```
+## Optimizations
+
+The migrated code can be optimized by using profiling tools (in this case we use nvprof as we have run the code on nvidia gpu) which helps in identifying the hotspots.
+
+Command: `nvprof <executable_name>`
+ 
+It shows the time taken by the API calls as well as the GPU activities. The output of the above command displays two functions under GPU activities i.e., convolutionRowsKernel and convolutionColumnsKernel functions in which loading the input data and actual computations takes place. 
+
+If we observe the migrated SYCL code, especially in the above-mentioned function calls, we see many ‘for’ loops which are being unrolled.
+Although loop unrolling exposes opportunities for instruction scheduling optimization by the compiler and thus can improve performance, sometimes it may increase pressure on register allocation and cause register spilling. 
+
+So, it is always a good idea to compare the performance with and without loop unrolling along with different times of unrolls to decide if a loop should be unrolled or how many times to unroll it.
+
+In this case, by implementing the above technique, we can decrease the execution time by avoiding loop unrolling at the innermost “for-loop” of the computation part in convolutionRowsKernel function (line 120) and avoiding loop unrolling at the outer loop of the computation part in convolutionColumnsKernel function (line 242) of the file convolutionSeparable.dp.cpp.
+
+Also, we can still decrease the execution time by avoiding the repetitive loading of c_Kernel[] array (as it is independent of i for loop in convolutionSeparable.dp.cpp file). 
+
+  ```
+  for (int i = ROWS_HALO_STEPS; i < ROWS_HALO_STEPS + ROWS_RESULT_STEPS; i++) {
+      float sum = 0;
+  for (int j = -KERNEL_RADIUS; j <= KERNEL_RADIUS; j++) {
+     sum += c_Kernel[KERNEL_RADIUS - j] *s_Data[item_ct1.get_local_id(1)][item_ct1.get_local_id(2) + i * ROWS_BLOCKDIM_X + j];}
+  ```
+
+We can separate the array and load it into another new array and use it in place of c_Kernel
+
+  ```
+  float a[2*KERNEL_RADIUS + 1];
+  for(int i=0; i<= 2*KERNEL_RADIUS; i++)
+  a[i]=c_Kernel[i]; 
+  ```
+(Note: These optimization techniques also work with the larger input image sizes.)
 
 ## Build the `convolutionSeparable` Sample for CPU and GPU
 
@@ -123,7 +155,57 @@ You can run the programs for CPU and GPU. The commands indicate the device targe
     make run_cmo_cpu
     make run_cmo_gpu
     ```
-    
+## Example output
+
+dpct_output
+
+```
+Running on Tesla P100-PCIE-12GB
+Image Width x Height = 3072 x 3072
+
+Allocating and initializing host arrays...
+Allocating and initializing CUDA arrays...
+Running GPU convolution (16 identical iterations)...
+
+convolutionSeparable, Throughput = 3222.8755 MPixels/sec, Time = 0.00293 s, Size = 9437184 Pixels, NumDevsUsed = 1, Workgroup = 0
+
+Reading back GPU results...
+
+Checking the results...
+ ...running convolutionRowCPU()
+ ...running convolutionColumnCPU()
+ ...comparing the results
+ ...Relative L2 norm: 0.000000E+00
+
+Shutting down...
+Test passed
+Built target run_gpu
+```
+
+sycl_migrated_optimized
+
+```
+Running on Tesla P100-PCIE-12GB
+Image Width x Height = 3072 x 3072
+
+Allocating and initializing host arrays...
+Allocating and initializing CUDA arrays...
+Running GPU convolution (16 identical iterations)...
+
+convolutionSeparable, Throughput = 21469.4930 MPixels/sec, Time = 0.00044 s, Size = 9437184 Pixels, NumDevsUsed = 1, Workgroup = 0
+
+Reading back GPU results...
+
+Checking the results...
+ ...running convolutionRowCPU()
+ ...running convolutionColumnCPU()
+ ...comparing the results
+ ...Relative L2 norm: 0.000000E+00
+
+Shutting down...
+Test passed
+Built target run_cmo_gpu
+```
 
 ## License
 Code samples are licensed under the MIT license. See
