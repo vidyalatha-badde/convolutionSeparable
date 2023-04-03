@@ -1,24 +1,16 @@
 ﻿# `convolutionSeparable` Sample
 
-## Prior knowledge
-
-- [CUDA](https://docs.nvidia.com/cuda/cuda-c-programming-guide/) - Beginner
-- [SYCL](https://registry.khronos.org/SYCL/specs/sycl-2020/html/sycl-2020.html) - Beginner
-- [SYCLomatic Manual](https://github.com/oneapi-src/SYCLomatic#syclomatic)
-
-## Prerequisites
+The convolution separable is a process in which a single convolution can be divided into two or more convolutions to produce the same output. This sample is implemented using SYCL* by migrating code from original CUDA source code and offloading computations to a GPU/CPU.
 
 | Property              | Description
 |:---                   |:---
-| OS                    | Ubuntu* 20.04
-| Hardware              | SYCL compatible hardware 
-| Software              | open source oneAPI DPC++/C++ Compiler
-
-## Source code
-
-- [CUDA](https://github.com/NVIDIA/cuda-samples/tree/master/Samples/2_Concepts_and_Techniques/convolutionSeparable) - Source code 
+| What you will learn              | How to begin migrating CUDA to SYCL 
+| Time to complete              | 15 minutes
 
 ## Purpose
+
+The sample shows the migration of convolutionSeperable from CUDA to SYCL using SYCLomatic tool and optimizing the migrated sycl code further to acheive good results.
+We use Intel open-sources SYCLomatic migration tool which assists developers in porting CUDA code automatically to SYCL code. To finish the process, developers complete the rest of the coding manually and then tune to the desired level of performance for the target architecture.
 
 This sample contains two versions in the following folders:
 
@@ -27,26 +19,33 @@ This sample contains two versions in the following folders:
 | `dpct_output`              | Contains output of Intel® SYCLomatic Compatibility Tool which is fully migrated version of CUDA code.
 | `sycl_migrated_optimized`            | Contains the optimized sycl code
 
-## CUDA features demonstrated
-
-This sample demonstrates the migration of the following prominent CUDA features: 
-
-- Shared memory
-- Constant memory
-- Cooperative groups
-
-
 ## CUDA source code evaluation
 
 A Separable Convolution is a process in which a single convolution can be divided into two or more convolutions to produce the same output. This sample implements a separable convolution filter of a 2D image with an arbitrary kernel. There are two functions in the code named convolutionRowsGPU and convolutionColumnsGPU in which the kernel functions (convolutionRowsKernel & convolutionColumnsKernel) are called where the loading of the input data and computations are performed. We validate the results with reference CPU separable convolution implementation by calculating the relative L2 norm.
+
+This sample is based on the sample convolutionSeparable(https://github.com/NVIDIA/cuda-samples/tree/master/Samples/2_Concepts_and_Techniques/convolutionSeparable) in the NVIDIA/cuda-samples GitHub repository. 
 
 ## Workflow For CUDA to SYCL migration
 
 Refer [Workflow](https://www.intel.com/content/www/us/en/developer/tools/oneapi/training/cuda-sycl-migration-workflow.html#gs.s2njvh) for details.
 
-## Set Environment Variables
+## Prerequisites
 
-When working with the command-line interface (CLI), you should configure the oneAPI toolkits using environment variables. Set up your CLI environment by sourcing the `setvars` script every time you open a new terminal window. This practice ensures that your compiler, libraries, and tools are ready for development.
+| Optimized for              | Description
+|:---                   |:---
+| OS                    | Ubuntu* 20.04
+| Hardware              | SYCL compatible hardware 
+| Software              | open source oneAPI DPC++/C++ Compiler
+
+
+## Key Implementation Details
+
+This sample demonstrates the migration of the following CUDA features: 
+
+- Shared memory
+- Constant memory
+- Cooperative groups
+
 
 ## Tool assisted migration – SYCLomatic 
 
@@ -64,12 +63,6 @@ For this sample, the Intel SYCLomatic Compatibility tool automatically migrates 
    c2s -p compile_commands.json --in-root ../../.. --use-custom-helper=api
    ```
    
-## Manual workarounds 
-  
-To find the device on which the code is getting executed replace the findCudaDevice (argc, (const char **) argv); with the following sycl get_device() API
- ```
- std::cout << "\nRunning on " << dpct::get_default_queue().get_device().get_info<sycl::info::device::name>() <<"\n";   
- ```
 ## Optimizations
 
 The migrated code can be optimized by using profiling tools which helps in identifying the hotspots (in this case convolutionRowsKernel() and convolutionColumnsKernel()).
@@ -124,6 +117,21 @@ We can separate the array and load it into another new array and use it in place
 
    By default, this command sequence will build the `dpct_output` as well as `sycl_migrated_optimized` versions of the program.
 
+3. Run the code
+
+   You can run the programs for CPU and GPU. The commands indicate the device target.
+
+     > Run `dpct_output` for CPU and GPU.
+      ```
+      make run_cpu
+      make run_gpu
+      ```
+     > Run `sycl_migrated_optimized` for CPU and GPU.
+      ```
+      make run_cmo_cpu
+      make run_cmo_gpu
+      ```
+
 #### Troubleshooting
 
 If an error occurs, you can get more details by running `make` with
@@ -134,22 +142,6 @@ make VERBOSE=1
 If you receive an error message, troubleshoot the problem using the **Diagnostics Utility for Intel® oneAPI Toolkits**. The diagnostic utility provides configuration and system checks to help find missing dependencies, permissions errors, and other issues. See the [Diagnostics Utility for Intel® oneAPI Toolkits User Guide](https://www.intel.com/content/www/us/en/develop/documentation/diagnostic-utility-user-guide/top.html) for more information on using the utility.
 
 
-## Run the `convolutionSeparable` Sample
-
-### On Linux
-
-You can run the programs for CPU and GPU. The commands indicate the device target.
-
-1. Run `dpct_output` for CPU and GPU.
-    ```
-    make run_cpu
-    make run_gpu
-    ```
-2. Run `sycl_migrated_optimized` for CPU and GPU.
-    ```
-    make run_cmo_cpu
-    make run_cmo_gpu
-    ```
 ## Example output
 
 dpct_output
