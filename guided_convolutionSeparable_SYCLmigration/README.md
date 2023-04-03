@@ -46,6 +46,9 @@ This sample demonstrates the migration of the following CUDA features:
 - Constant memory
 - Cooperative groups
 
+## Link to CUDA source code: 
+
+[convolutionSeparable](https://github.com/NVIDIA/cuda-samples/tree/master/Samples/2_Concepts_and_Techniques/convolutionSeparable)
 
 ## Tool assisted migration – SYCLomatic 
 
