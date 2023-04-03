@@ -22,8 +22,7 @@ This sample contains two versions in the following folders:
 ## CUDA source code evaluation
 
 A Separable Convolution is a process in which a single convolution can be divided into two or more convolutions to produce the same output. This sample implements a separable convolution filter of a 2D image with an arbitrary kernel. There are two functions in the code named convolutionRowsGPU and convolutionColumnsGPU in which the kernel functions (convolutionRowsKernel & convolutionColumnsKernel) are called where the loading of the input data and computations are performed. We validate the results with reference CPU separable convolution implementation by calculating the relative L2 norm.
-
-This sample is based on the sample convolutionSeparable(https://github.com/NVIDIA/cuda-samples/tree/master/Samples/2_Concepts_and_Techniques/convolutionSeparable) in the NVIDIA/cuda-samples GitHub repository. 
+ 
 
 ## Workflow For CUDA to SYCL migration
 
@@ -50,7 +49,20 @@ This sample demonstrates the migration of the following CUDA features:
 
 [convolutionSeparable](https://github.com/NVIDIA/cuda-samples/tree/master/Samples/2_Concepts_and_Techniques/convolutionSeparable)
 
-## Tool assisted migration – SYCLomatic 
+
+## Build the `convolutionSeparable` Sample for CPU and GPU
+
+> **Note**: If you have not already done so, set up your CLI
+> environment by sourcing  the `setvars` script in the root of your oneAPI installation.
+>
+> Linux*:
+> - For system wide installations: `. /opt/intel/oneapi/setvars.sh`
+> - For private installations: ` . ~/intel/oneapi/setvars.sh`
+> - For non-POSIX shells, like csh, use the following command: `bash -c 'source <install-dir>/setvars.sh ; exec csh'`
+>
+> For more information on configuring environment variables, see [Use the setvars Script with Linux* or macOS*](https://www.intel.com/content/www/us/en/develop/documentation/oneapi-programming-guide/top/oneapi-development-environment-setup/use-the-setvars-script-with-linux-or-macos.html).
+
+### Tool assisted migration – SYCLomatic 
 
 For this sample, the Intel SYCLomatic Compatibility tool automatically migrates 100% of the CUDA code to SYCL. Follow these steps to generate the SYCL code using the compatibility tool:
 
@@ -66,7 +78,7 @@ For this sample, the Intel SYCLomatic Compatibility tool automatically migrates 
    c2s -p compile_commands.json --in-root ../../.. --use-custom-helper=api
    ```
    
-## Optimizations
+### Optimizations
 
 The migrated code can be optimized by using profiling tools which helps in identifying the hotspots (in this case convolutionRowsKernel() and convolutionColumnsKernel()).
  
@@ -94,18 +106,6 @@ We can separate the array and load it into another new array and use it in place
   a[i]=c_Kernel[i]; 
   ```
 (Note: These optimization techniques also work with the larger input image sizes.)
-
-## Build the `convolutionSeparable` Sample for CPU and GPU
-
-> **Note**: If you have not already done so, set up your CLI
-> environment by sourcing  the `setvars` script in the root of your oneAPI installation.
->
-> Linux*:
-> - For system wide installations: `. /opt/intel/oneapi/setvars.sh`
-> - For private installations: ` . ~/intel/oneapi/setvars.sh`
-> - For non-POSIX shells, like csh, use the following command: `bash -c 'source <install-dir>/setvars.sh ; exec csh'`
->
-> For more information on configuring environment variables, see [Use the setvars Script with Linux* or macOS*](https://www.intel.com/content/www/us/en/develop/documentation/oneapi-programming-guide/top/oneapi-development-environment-setup/use-the-setvars-script-with-linux-or-macos.html).
 
 ### On Linux*
 
