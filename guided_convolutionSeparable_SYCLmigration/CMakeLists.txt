@@ -17,8 +17,8 @@ option (BUILD_SYCL_MIGRATED_SUBPROJECT "Build targets from subproject dpct_outpu
 option (BUILD_SYCL_MIGRATED_OPTIMIZED_SUBPROJECT "Build targets from subproject convolutionSeparable_migrated_optimized" ON)
 
 if (BUILD_SYCL_MIGRATED_SUBPROJECT)
-	add_subdirectory (dpct_output)
+	add_subdirectory (01_dpct_output)
 endif ()
 if (BUILD_SYCL_MIGRATED_OPTIMIZED_SUBPROJECT)
-        add_subdirectory (sycl_migrated_optimized)
+        add_subdirectory (02_sycl_migrated_optimized)
 endif ()
