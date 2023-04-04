@@ -10,23 +10,26 @@ The convolution separable is a process in which a single convolution can be divi
 ## Purpose
 
 The sample shows the migration of convolutionSeperable from CUDA to SYCL using SYCLomatic tool and optimizing the migrated sycl code further to acheive good results.
-We use Intel open-sources SYCLomatic migration tool which assists developers in porting CUDA code automatically to SYCL code. To finish the process, developers complete the rest of the coding manually and then tune to the desired level of performance for the target architecture.
+
+
+>**Note**: We use Intel® open-sources SYCLomatic migration tool which assists developers in porting CUDA code automatically to SYCL code. To finish the process, developers complete the rest of the coding manually and then tune to the desired level of performance for the target architecture. Users can also use Intel® DPC++ Compatibility Tool which comes along with the Intel® oneAPI Base Toolkit.
 
 This sample contains two versions in the following folders:
 
 | Folder Name                   | Description
 |:---                           |:---
-| `dpct_output`              | Contains output of Intel® SYCLomatic Compatibility Tool which is fully migrated version of CUDA code.
-| `sycl_migrated_optimized`            | Contains the optimized sycl code
-
-## CUDA source code evaluation
-
-A Separable Convolution is a process in which a single convolution can be divided into two or more convolutions to produce the same output. This sample implements a separable convolution filter of a 2D image with an arbitrary kernel. There are two functions in the code named convolutionRowsGPU and convolutionColumnsGPU in which the kernel functions (convolutionRowsKernel & convolutionColumnsKernel) are called where the loading of the input data and computations are performed. We validate the results with reference CPU separable convolution implementation by calculating the relative L2 norm.
- 
+| `01_dpct_output`              | Contains output of Intel® SYCLomatic Compatibility Tool which is fully migrated version of CUDA code.
+| `02_sycl_migrated_optimized`            | Contains the optimized sycl code
 
 ## Workflow For CUDA to SYCL migration
 
 Refer [Workflow](https://www.intel.com/content/www/us/en/developer/tools/oneapi/training/cuda-sycl-migration-workflow.html#gs.s2njvh) for details.
+
+## CUDA source code evaluation
+
+A Separable Convolution is a process in which a single convolution can be divided into two or more convolutions to produce the same output. This sample implements a separable convolution filter of a 2D image with an arbitrary kernel. There are two functions in the code named convolutionRowsGPU and convolutionColumnsGPU in which the kernel functions (convolutionRowsKernel & convolutionColumnsKernel) are called where the loading of the input data and computations are performed. We validate the results with reference CPU separable convolution implementation by calculating the relative L2 norm.
+
+This sample is migrated from NVIDIA CUDA sample. See the sample [convolutionSeparable](https://github.com/NVIDIA/cuda-samples/tree/master/Samples/2_Concepts_and_Techniques/convolutionSeparable) in the NVIDIA/cuda-samples GitHub.
 
 ## Prerequisites
 
@@ -45,11 +48,6 @@ This sample demonstrates the migration of the following CUDA features:
 - Constant memory
 - Cooperative groups
 
-## Link to CUDA source code: 
-
-[convolutionSeparable](https://github.com/NVIDIA/cuda-samples/tree/master/Samples/2_Concepts_and_Techniques/convolutionSeparable)
-
-
 ## Build the `convolutionSeparable` Sample for CPU and GPU
 
 > **Note**: If you have not already done so, set up your CLI
@@ -64,7 +62,7 @@ This sample demonstrates the migration of the following CUDA features:
 
 ### Tool assisted migration – SYCLomatic 
 
-For this sample, the Intel SYCLomatic Compatibility tool automatically migrates 100% of the CUDA code to SYCL. Follow these steps to generate the SYCL code using the compatibility tool:
+For this sample, the Intel® SYCLomatic Compatibility tool automatically migrates 100% of the CUDA code to SYCL. Follow these steps to generate the SYCL code using the compatibility tool:
 
 1. git clone https://github.com/NVIDIA/cuda-samples.git
 2. cd cuda-samples/Samples/2_Concepts_and_Techniques/convolutionSeparable/
@@ -73,7 +71,7 @@ For this sample, the Intel SYCLomatic Compatibility tool automatically migrates 
    intercept-build make
    ```
 4. The above step creates a JSON file named compile_commands.json with all the compiler invocations and stores the names of the input files and the compiler options.
-5. Pass the JSON file as input to the Intel SYCLomatic Compatibility Tool. The result is written to a folder named dpct_output. The --in-root specifies path to the root of the source tree to be migrated.
+5. Pass the JSON file as input to the Intel® SYCLomatic Compatibility Tool. The result is written to a folder named dpct_output. The --in-root specifies path to the root of the source tree to be migrated.
    ```
    c2s -p compile_commands.json --in-root ../../.. --use-custom-helper=api
    ```
@@ -105,7 +103,7 @@ We can separate the array and load it into another new array and use it in place
   for(int i=0; i<= 2*KERNEL_RADIUS; i++)
   a[i]=c_Kernel[i]; 
   ```
-(Note: These optimization techniques also work with the larger input image sizes.)
+>**Note**: These optimization techniques also work with the larger input image sizes.
 
 ### On Linux*
 
