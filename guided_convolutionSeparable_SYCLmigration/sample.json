@@ -1,8 +1,8 @@
 {
   "guid": "842EBEB9-B902-4706-8C08-02E4EB550FC1",
   "name": "convolutionSeparable",
-  "categories": ["Toolkit/oneAPI Direct Programming/C++SYCL/Dense Linear Algebra"],
-  "description": "Migration of convolutionSeparable from CUDA to SYCL, demonstrates usage of Taskflow programming model inplace of CUDA Graph API's",
+  "categories": ["Toolkit/oneAPI Direct Programming/C++SYCL/"],
+  "description": "This sample implements a separable convolution filter of a 2D signal with a gaussian kernel.",
   "toolchain": [ "dpcpp" ],
   "languages": [ { "cpp": {} } ],
   "targetDevice": [ "CPU", "GPU" ],
@@ -16,7 +16,9 @@
                         "cmake ..",
                         "make",
                         "make run_cpu",
-                        "make run_gpu"
+                        "make run_gpu",
+                        "make run_cmo_cpu",
+                        "make run_cmo_gpu"
                  ]
         }]
 
