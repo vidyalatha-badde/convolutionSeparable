@@ -4,7 +4,7 @@ The convolution separable is a process in which a single convolution can be divi
 
 | Property              | Description
 |:---                   |:---
-| What you will learn              | How to begin migrating CUDA to SYCL 
+| What you will learn              | Migrate convolutionSeparable from CUDA to SYCL and optimize it
 | Time to complete              | 15 minutes
 
 ## Purpose
@@ -36,8 +36,8 @@ This sample is migrated from NVIDIA CUDA sample. See the sample [convolutionSepa
 | Optimized for              | Description
 |:---                   |:---
 | OS                    | Ubuntu* 20.04
-| Hardware              | SYCL compatible hardware 
-| Software              | open source oneAPI DPC++/C++ Compiler
+| Hardware              | Intel® Gen9, Gen11 and Xeon CPU 
+| Software              | SYCLomatic version 2023.0, Intel oneAPI Base Toolkit version 2023.0
 
 
 ## Key Implementation Details
@@ -62,7 +62,7 @@ This sample demonstrates the migration of the following CUDA features:
 
 ### Tool assisted migration – SYCLomatic 
 
-For this sample, the Intel® SYCLomatic Compatibility tool automatically migrates 100% of the CUDA code to SYCL. Follow these steps to generate the SYCL code using the compatibility tool:
+For this sample, the Intel® SYCLomatic Compatibility tool automatically migrates 100% of the CUDA runtime API's to SYCL. Follow these steps to generate the SYCL code using the compatibility tool:
 
 1. git clone https://github.com/NVIDIA/cuda-samples.git
 2. cd cuda-samples/Samples/2_Concepts_and_Techniques/convolutionSeparable/
