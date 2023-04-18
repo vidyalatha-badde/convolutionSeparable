@@ -116,18 +116,18 @@ We can separate the array and load it into another new array and use it in place
    $ make
    ```
 
-   By default, this command sequence will build the `dpct_output` as well as `sycl_migrated_optimized` versions of the program.
+   By default, this command sequence will build the `01_dpct_output` as well as `02_sycl_migrated_optimized` versions of the program.
 
 3. Run the code
 
    You can run the programs for CPU and GPU. The commands indicate the device target.
 
-     > Run `dpct_output` for CPU and GPU.
+     > Run `01_dpct_output` for CPU and GPU.
       ```
       make run_cpu
       make run_gpu
       ```
-     > Run `sycl_migrated_optimized` for CPU and GPU.
+     > Run `02_sycl_migrated_optimized` for CPU and GPU.
       ```
       make run_cmo_cpu
       make run_cmo_gpu
